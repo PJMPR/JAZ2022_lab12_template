@@ -15,9 +15,10 @@ public class MoviesEntitiesRepository implements IMoviesEntitiesRepository {
 
     private final EntityManager entityManager;
 
-    public List<Movie> getAll(){
+    public List<Movie> getAll(String byTitle){
         return entityManager
-                .createQuery("SELECT m FROM Movie m WHERE m.id>0", Movie.class)
+                .createQuery("SELECT m FROM Movie m WHERE m.id>0 AND m.runtime>120 AND m.originalTitle LIKE :title AND m.budget>100", Movie.class)
+                .setParameter("title", byTitle)
                 .setMaxResults(10)
                 .setFirstResult(2)
                 .getResultList();

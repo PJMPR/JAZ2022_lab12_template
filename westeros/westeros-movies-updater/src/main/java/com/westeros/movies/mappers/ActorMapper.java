@@ -17,7 +17,7 @@ public class ActorMapper implements IMapEntities<ActorDto, Actor>{
     public Actor map(ActorDto actorDto, Actor actor) {
         actor.setSourceId(actorDto.getId());
         actor.setName(actorDto.getName());
-        actor.setAlsoKnownAs(alsoKnownAs(actorDto));
+        //actor.setAlsoKnownAs(alsoKnownAs(actorDto));
         actor.setBiography(actorDto.getBiography());
         actor.setProfilePath(actorDto.getProfilePath());
         actor.setPopularity(actorDto.getPopularity());

@@ -18,7 +18,7 @@ public class Actor {
     private String name;
     private String profilePath;
     private String alsoKnownAs;
-    @Column(columnDefinition = "text")
+    //@Column(columnDefinition = "text")
     private String biography;
     private LocalDate birthday;
     private LocalDate deathday;

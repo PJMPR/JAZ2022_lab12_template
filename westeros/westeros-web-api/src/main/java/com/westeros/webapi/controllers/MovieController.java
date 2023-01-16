@@ -30,8 +30,10 @@ public class MovieController {
     }
 
     @GetMapping
-    public ResponseEntity getAll(@RequestParam(value = "dateTo", required = false)LocalDate date){
-        var result = repo.getAll();
+    public ResponseEntity getAll(
+            @RequestParam(value = "pageSize", required = false) int pageSize,
+            @RequestParam(value = "dateTo", required = false)LocalDate date){
+        //var result = repo.getAll();
         return ResponseEntity.ok(movieService.getAll());
     }
 }

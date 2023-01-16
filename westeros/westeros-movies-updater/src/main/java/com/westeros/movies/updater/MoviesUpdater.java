@@ -7,17 +7,20 @@ import com.westeros.movies.mappers.ICatalogMappers;
 import com.westeros.movies.mappers.IMapEntities;
 import com.westeros.moviesclient.IMoviesClient;
 import com.westeros.moviesclient.IMoviesDictionariesClient;
+import com.westeros.moviesclient.contract.PagedResultDto;
 import com.westeros.tools.safeinvoker.SafeInvoking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-@Component
+@Service
 public class MoviesUpdater implements IUpdateMovies{
 
     private final ICatalogData data;
@@ -44,6 +47,10 @@ public class MoviesUpdater implements IUpdateMovies{
 
         updateDictionaries();
         var pagedResultDto = moviesClient.getByDateRange(from, to);
+        var pagedResults = new ArrayList<PagedResultDto>();
+        for (var i = 1; i<=pagedResultDto.getTotalPages();i++){
+            pagedResultDto =moviesClient.getByDateRange(from, to, i);
+
 
         var movies = pagedResultDto.getResults().stream().map(dto->moviesClient.getMovie(dto.getId())).toList();
 
@@ -117,13 +124,14 @@ public class MoviesUpdater implements IUpdateMovies{
             castDto.stream().map(c->{
               var tmp =  entityMapper.forCharacter().map(c);
               tmp.setMovie(x);
-              tmp.setActor(actorsToSave.stream().filter(a->a.getSourceId()==c.getId()).findFirst().get());
+              tmp.setActor(actorsToSave.stream().filter(a->a.getSourceId()==c.getId()).findFirst().orElse(null));
               return tmp;
-            }).forEach(c->data.getCharacter().save(c));
+            }).filter(c->c!=null).forEach(c->data.getCharacter().save(c));
 
 
 
         });
+        }
     }
 
     private void updateDictionaries(){

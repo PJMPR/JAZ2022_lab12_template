@@ -7,6 +7,7 @@ import com.westeros.webapi.contract.MovieSummaryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -30,6 +31,14 @@ public class MovieService implements IMovieService{
 
     @Override
     public List<MovieSummaryDto> getAll() {
+
+        var tstResult = db.getMovies().findMoviesByReleaseDateAfterAndReleaseDateBefore(
+                LocalDate.of(2022,10,1),
+                LocalDate.now());
+
+        var tstResult2 = db.getMovies().findByDateRange(LocalDate.of(2022,10,1),
+                LocalDate.now());
+
         return db.getMovies()
                 .findAll()
                 .stream()

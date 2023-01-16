@@ -24,6 +24,6 @@ public class WesterosMoviesUpdaterApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        updater.updateByDateRange(LocalDate.now().minusMonths(1), LocalDate.now());
+        //updater.updateByDateRange(LocalDate.now().minusMonths(1), LocalDate.now());
     }
 }
